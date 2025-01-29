@@ -1,3 +1,4 @@
+from torch import multinomal
 from torch.nn import Conv2d, Linear, ReLU, Flatten, Sequential, Module
 
 
@@ -24,5 +25,14 @@ class Agent(Module):
         )
 
     def forward(self, x):
-        logits = self.model(x)
-        return logits
+        output = self.model(x)
+        return output
+
+
+    def select_action(self, observation, action_mask=None):
+        logits = self.forward(observation)
+        if action_mask is not None:
+            logits[~action_mask] = -float("inf")
+        probabilities = logits.softmax(dim=-1)
+        return multinomal(probabilities, 1).item()
+
