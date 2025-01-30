@@ -1,8 +1,14 @@
 from torch import multinomal
 from torch.nn import Conv2d, Linear, ReLU, Flatten, Sequential, Module
 
+from mcts import MCTree, MCTNode
 
-class Agent(Module):
+class MCTSAgent:
+    def __init__(self):
+        mct = MCTree()
+
+
+class CNNAgent(Module):
     def __init__(self, env, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.env = env
